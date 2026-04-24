@@ -45,7 +45,30 @@ def find_id(header):
     header = header.replace(">", "").strip()
     return header.split()[0]
 
+def attach_number_to_virus(header, virus):
+    """
+    If a number is near the virus name, attach it to the virus.
+    Example:
+    Human adenovirus 89 -> human_adenovirus_89
+    HAdV-C1 -> human_adenovirus_1
+    """
+    
+    if virus == "unknown_virus":
+        return virus
 
+    patterns = [
+        rf"{virus.replace('_', r'[\s_-]+')}[\s_-]*(\d+)",
+        r"HAdV[\s_-]*[A-G]?[\s_-]*(\d+)",
+        r"human[\s_-]+adenovirus[\s_-]*(?:type[\s_-]*)?(\d+)",
+        r"adenovirus[\s_-]*(?:type[\s_-]*)?(\d+)"
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, header, re.IGNORECASE)
+        if match:
+            return f"{virus}_{match.group(1)}"
+
+    return virus
 with open(input_fasta) as infile, open(output_fasta, "w") as outfile:
     for line in infile:
         if line.startswith(">"):
