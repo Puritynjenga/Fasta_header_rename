@@ -1,8 +1,11 @@
-import re
+import sys
 
-input_fasta = "input.fasta"
-output_fasta = "renamed.fasta"
+if len(sys.argv) != 3:
+    print("Usage: python rename_fasta_headers.py input.fasta output.fasta")
+    sys.exit(1)
 
+input_fasta = sys.argv[1]
+output_fasta = sys.argv[2]
 country_db = "countries.tsv"
 virus_db = "viruses.tsv"
 
