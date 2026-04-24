@@ -1,5 +1,5 @@
 import sys
-
+import re 
 if len(sys.argv) != 3:
     print("Usage: python rename_fasta_headers.py input.fasta output.fasta")
     sys.exit(1)
